@@ -1,0 +1,87 @@
+
+const BASE = "https://api.alquran.cloud/v1";
+const QURANENC_BASE = "https://quranenc.com/api/v1";
+
+async function request(path) {
+  const response = await fetch(`${BASE}${path}`);
+
+  if (!response.ok) {
+    throw new Error(`Quran data service returned ${response.status}`);
+  }
+
+  const json = await response.json();
+
+  if (json.code !== 200 || !json.data) {
+    throw new Error(json.status || "Unable to load Quran data");
+  }
+
+  return json.data;
+}
+
+export const getSurahs = () => request("/surah");
+
+export const getSurah = (number, editions) =>
+  request(
+    `/surah/${number}/editions/${editions.map(encodeURIComponent).join(",")}`
+  );
+
+export const getEditionList = () => request("/edition");
+
+export const getEditionsByType = (type) =>
+  request(`/edition/type/${encodeURIComponent(type)}`);
+
+export const getEditionsByLanguage = (language) =>
+  request(`/edition/language/${encodeURIComponent(language)}`);
+
+export const getRandomAyah = (editions) =>
+  request(`/ayah/random/editions/${editions.map(encodeURIComponent).join(",")}`);
+
+export const searchQuran = (query, edition = "en.sahih") =>
+  request(`/search/${encodeURIComponent(query)}/all/${encodeURIComponent(edition)}`);
+
+// Telugu translation from QuranEnc
+export async function getTeluguSurah(surahNumber) {
+  const response = await fetch(
+    `${QURANENC_BASE}/translation/sura/telugu_muhammad/${surahNumber}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`Telugu translation service returned ${response.status}`);
+  }
+
+  const json = await response.json();
+
+  // QuranEnc returns an array of verse translations.
+  const rows = Array.isArray(json)
+    ? json
+    : Array.isArray(json.result)
+      ? json.result
+      : Array.isArray(json.data)
+        ? json.data
+        : null;
+
+  if (!rows) {
+    throw new Error("Unable to read Telugu translation data");
+  }
+
+  return rows.map((item) => ({
+    numberInSurah: Number(item.aya),
+    text: item.translation,
+    footnotes: item.footnotes || ""
+  }));
+}
+
+export function chooseEdition(editions, language, preferred = []) {
+  const matches = editions.filter(
+    (edition) =>
+      edition.language === language &&
+      edition.type === "translation"
+  );
+
+  for (const id of preferred) {
+    const exact = matches.find((edition) => edition.identifier === id);
+    if (exact) return exact;
+  }
+
+  return matches[0] || null;
+}
