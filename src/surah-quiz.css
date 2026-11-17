@@ -1,0 +1,384 @@
+.qfe-surah-quiz {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin: 30px 0 18px;
+  padding: 25px 28px;
+  border: 1px solid #d9c99f;
+  border-radius: 18px;
+  background: linear-gradient(115deg, #f7f4e9, #fffdf7);
+}
+
+.qfe-quiz-decoration {
+  font-size: 38px;
+  color: #b38b42;
+  flex-shrink: 0;
+}
+
+.qfe-quiz-copy {
+  flex: 1;
+}
+
+.qfe-quiz-kicker {
+  display: block;
+  color: #947337;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+
+.qfe-quiz-copy h3 {
+  margin: 7px 0 5px;
+  color: #183b32;
+  font-size: 20px;
+}
+
+.qfe-quiz-copy p {
+  margin: 0;
+  color: #65716b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.qfe-start-quiz,
+.qfe-next-question,
+.qfe-next-surah,
+.qfe-certificate-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 999px;
+  background: #17483b;
+  color: white;
+  padding: 13px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.qfe-start-quiz:hover,
+.qfe-next-question:hover,
+.qfe-next-surah:hover,
+.qfe-certificate-button:hover {
+  background: #246653;
+}
+
+.qfe-quiz-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(9, 24, 20, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  overflow-y: auto;
+}
+
+.qfe-quiz-modal {
+  position: relative;
+  width: min(100%, 650px);
+  max-height: 94vh;
+  overflow-y: auto;
+  background: #fffdf8;
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.28);
+}
+
+.qfe-quiz-close {
+  position: absolute;
+  right: 17px;
+  top: 17px;
+  border: 0;
+  background: #f1eee5;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: #34564b;
+  cursor: pointer;
+}
+
+.qfe-modal-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8d6d2f;
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.qfe-progress {
+  height: 6px;
+  background: #e9e4d8;
+  border-radius: 9px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.qfe-progress span {
+  display: block;
+  height: 100%;
+  background: #b8954b;
+  border-radius: 9px;
+  transition: width 0.2s;
+}
+
+.qfe-question-meta {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  color: #8c7954;
+}
+
+.qfe-quiz-modal h2 {
+  font-size: 23px;
+  color: #173c32;
+  margin: 10px 0 16px;
+}
+
+.qfe-question-arabic {
+  font-family: serif;
+  font-size: 27px;
+  line-height: 1.9;
+  text-align: center;
+  padding: 18px;
+  background: #f7f4eb;
+  border-radius: 14px;
+  color: #193d32;
+}
+
+.qfe-options {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.qfe-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  width: 100%;
+  border: 1px solid #e4dfd2;
+  border-radius: 12px;
+  padding: 13px;
+  background: white;
+  color: #34453e;
+  line-height: 1.55;
+  cursor: pointer;
+}
+
+.qfe-option > span:first-child {
+  flex: 0 0 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f0ede5;
+  color: #80652e;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.qfe-option-text {
+  flex: 1;
+}
+
+.qfe-option.correct {
+  border-color: #4d9472;
+  background: #edf7f0;
+}
+
+.qfe-option.incorrect {
+  border-color: #c87970;
+  background: #fff1ef;
+}
+
+.qfe-option svg {
+  flex-shrink: 0;
+  color: #347650;
+}
+
+.qfe-option:disabled {
+  cursor: default;
+}
+
+.qfe-next-question {
+  margin-left: auto;
+}
+
+.qfe-result {
+  text-align: center;
+  padding: 12px 4px 4px;
+}
+
+.qfe-result-icon {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #f3ead3;
+  color: #987438;
+}
+
+.qfe-result h2 {
+  margin: 8px 0;
+}
+
+.qfe-score {
+  font-size: 62px;
+  font-weight: 800;
+  color: #1a4a3c;
+  line-height: 1.2;
+}
+
+.qfe-result > p {
+  color: #68736c;
+  margin: 8px 0 22px;
+}
+
+.qfe-share-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #c8b98f;
+  border-radius: 999px;
+  padding: 12px 20px;
+  background: #f8f4e8;
+  color: #735a2c;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.qfe-share-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.qfe-certificate {
+  margin: 22px auto;
+  padding: 18px;
+  background: #f7f4e9;
+  border: 1px solid #e4d8b8;
+  border-radius: 15px;
+  max-width: 430px;
+}
+
+.qfe-certificate-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #735a2c;
+}
+
+.qfe-certificate p {
+  font-size: 13px;
+  color: #65716b;
+}
+
+.qfe-certificate input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d9d2c1;
+  border-radius: 10px;
+  background: white;
+  font: inherit;
+  margin: 4px 0 12px;
+}
+
+.qfe-certificate-button {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.qfe-certificate-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.qfe-result-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.qfe-retake {
+  border: 1px solid #d7d0c2;
+  background: white;
+  color: #496056;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.qfe-next-surah {
+  font-size: 13px;
+}
+
+.qfe-quiz-message {
+  font-size: 13px;
+  color: #7a5d25;
+  margin: 10px 0;
+}
+
+.qfe-start-quiz:focus-visible,
+.qfe-option:focus-visible,
+.qfe-quiz-close:focus-visible {
+  outline: 3px solid #c69c48;
+  outline-offset: 3px;
+}
+
+@media (max-width: 650px) {
+  .qfe-surah-quiz {
+    padding: 20px;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .qfe-quiz-decoration {
+    font-size: 28px;
+  }
+
+  .qfe-quiz-copy {
+    flex: 1 1 calc(100% - 48px);
+  }
+
+  .qfe-quiz-copy h3 {
+    font-size: 18px;
+  }
+
+  .qfe-start-quiz {
+    width: 100%;
+  }
+
+  .qfe-quiz-modal {
+    padding: 24px 18px;
+  }
+
+  .qfe-quiz-modal h2 {
+    font-size: 20px;
+  }
+
+  .qfe-question-arabic {
+    font-size: 23px;
+  }
+
+  .qfe-score {
+    font-size: 54px;
+  }
+}

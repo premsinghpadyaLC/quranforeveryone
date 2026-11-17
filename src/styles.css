@@ -56,3 +56,86 @@ button, .chapter-select-wrap select, .language-select select { touch-action: man
   .feature-strip small { font-size: 9px; }
   .tab-page { padding: 14px; }
 }
+
+
+/* Quran for Everyone — Version 2 Quiz Centre */
+.qz-wrap{display:grid;gap:20px;color:#263c30}
+.qz-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.qz-heading h2{font-size:25px;letter-spacing:-.7px;margin:6px 0;color:#203d30}
+.qz-heading p{font-size:12px;color:#829087;margin:0;line-height:1.7}
+.qz-kicker{font-size:9px;letter-spacing:1.5px;color:#a18753;font-weight:800}
+.qz-heading-icon,.qz-result-icon{width:54px;height:54px;border-radius:16px;background:#eaf1e9;color:#2b6348;display:grid;place-items:center;flex-shrink:0}
+.qz-intro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.qz-intro>div{background:#f7f9f5;border:1px solid #e8eee6;border-radius:11px;padding:14px;display:grid;gap:7px;color:#52765d}
+.qz-intro strong{font-size:11px;color:#304c39}
+.qz-intro span{font-size:10px;line-height:1.6;color:#87938a}
+.qz-setup,.qz-history,.qz-question-card,.qz-review{background:#fff;border:1px solid #e7ede5;border-radius:13px;padding:20px}
+.qz-setup h3,.qz-history h3,.qz-review h3{font-size:16px;margin:0 0 16px;color:#284635}
+.qz-setup>label{display:block;font-size:11px;font-weight:700;color:#52665a;margin:17px 0 8px}
+.qz-setup select{width:100%;padding:12px;border:1px solid #dfe7dd;border-radius:8px;background:#fff;color:#3f5748;font:inherit;font-size:12px}
+.qz-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.qz-category{background:#fbfcfa;border:1px solid #e5ebe3;border-radius:9px;padding:12px;text-align:left;display:grid;gap:5px;color:#385341}
+.qz-category strong{font-size:11px}
+.qz-category span{font-size:10px;line-height:1.5;color:#87938a}
+.qz-category.active,.qz-counts button.active{border-color:#8ca88f;background:#edf4ec;box-shadow:inset 0 0 0 1px #8ca88f}
+.qz-counts{display:flex;gap:8px}
+.qz-counts button{border:1px solid #e0e8de;background:#fff;border-radius:8px;padding:9px 17px;color:#526a58;font-weight:700}
+.qz-primary,.qz-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:8px;padding:11px 15px;font-size:11px;font-weight:700}
+.qz-primary{background:#1e513b;color:#fff}
+.qz-primary:disabled{opacity:.45;cursor:not-allowed}
+.qz-secondary{background:#edf3eb;color:#355b41}
+.qz-start{width:100%;margin-top:20px;padding:14px}
+.qz-note{font-size:9px;line-height:1.7;color:#98a198;margin:12px 0 0}
+.qz-error{margin-top:14px;padding:11px;border-radius:8px;background:#fff4ed;color:#995d36;font-size:11px}
+.qz-history-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.qz-history-head h3{margin:0}
+.qz-history-head span,.qz-history>p{font-size:10px;color:#8c988f}
+.qz-history-row{display:flex;justify-content:space-between;align-items:center;padding:12px 2px;border-bottom:1px solid #eff2ed}
+.qz-history-row:last-child{border-bottom:0}
+.qz-history-row strong,.qz-history-row small{display:block}
+.qz-history-row strong{font-size:11px;color:#3d5945}
+.qz-history-row small{font-size:9px;color:#98a39b;margin-top:4px;text-transform:capitalize}
+.qz-history-row b{font-size:12px;color:#42684c}
+.qz-progress-head{display:flex;justify-content:space-between;color:#849188;font-size:10px}
+.qz-progress{height:6px;background:#edf1eb;border-radius:20px;overflow:hidden}
+.qz-progress span,.qz-score-track span{display:block;height:100%;background:#779b79;border-radius:20px;transition:width .25s}
+.qz-question-card{padding:22px}
+.qz-arabic{font-family:"Noto Naskh Arabic",serif;font-size:29px;line-height:2.1;text-align:right;color:#203d30;padding:12px 4px 18px}
+.qz-translation{font-size:12px;line-height:1.8;color:#6d7c70;background:#f7f9f5;border-radius:8px;padding:12px}
+.qz-options{display:grid;gap:9px;margin-top:12px}
+.qz-option{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;padding:13px;border:1px solid #e4eae2;border-radius:9px;background:#fff;color:#405747;font-size:12px;line-height:1.7}
+.qz-option.correct{border-color:#83a987;background:#eff7ee;color:#2d6240}
+.qz-option.wrong{border-color:#d9a09a;background:#fff3f1;color:#99544c}
+.qz-option:disabled{cursor:default}
+.qz-feedback{margin-top:15px;padding:13px;border-radius:9px}
+.qz-feedback strong{font-size:11px}
+.qz-feedback p{font-size:11px;line-height:1.7;margin:6px 0}
+.qz-feedback small{font-size:9px;opacity:.8}
+.qz-feedback.is-correct{background:#eff7ee;color:#315f3e}
+.qz-feedback.is-wrong{background:#fff5ef;color:#875a43}
+.qz-question-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;padding-top:15px;border-top:1px solid #edf0eb}
+.qz-question-footer>span{font-size:10px;color:#8c988f}
+.qz-audio-card{display:grid;justify-items:center;gap:10px;padding:25px;color:#45694e;background:#f3f7f1;border-radius:10px}
+.qz-audio-card strong{font-size:13px}
+.qz-audio-card button{display:flex;align-items:center;gap:8px;border:0;border-radius:8px;background:#1e513b;color:white;padding:10px 15px;font-size:11px}
+.qz-audio-card small{font-size:10px;color:#a05a4f}
+.qz-result{text-align:center;background:#f7f9f5;border:1px solid #e7ede5;border-radius:13px;padding:28px}
+.qz-result-icon{margin:0 auto 12px}
+.qz-result h2{font-size:22px;color:#284635;margin:8px 0}
+.qz-result>p{font-size:11px;color:#829087}
+.qz-score{font-size:43px;font-weight:800;color:#28563b;margin:12px 0}
+.qz-score span{font-size:18px;color:#8b998e}
+.qz-score-track{height:8px;max-width:340px;background:#e6ece3;border-radius:20px;overflow:hidden;margin:15px auto}
+.qz-result-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:18px}
+.qz-review-item{padding:14px 0;border-bottom:1px solid #edf0eb}
+.qz-review-item:last-child{border-bottom:0}
+.qz-review-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qz-review-title strong{font-size:11px}
+.qz-review-title span{font-size:9px;color:#8d9a90;margin-left:auto}
+.qz-correct{color:#53835c}.qz-wrong{color:#b66d62}
+.qz-review-item>p{font-size:11px;color:#647469;line-height:1.7}
+.qz-review-item>small{font-size:10px;color:#315c3e;font-weight:700}
+.qz-explanation{background:#f6f8f4;padding:10px;border-radius:7px}
+.qz-text-button{border:0;background:transparent;color:#67816d;font-size:11px;font-weight:700}
+@media(max-width:720px){.qz-intro{grid-template-columns:1fr}.qz-category-grid{grid-template-columns:1fr}.qz-setup,.qz-history,.qz-question-card{padding:15px}.qz-heading h2{font-size:21px}.qz-arabic{font-size:25px}.qz-question-footer{align-items:stretch;flex-direction:column}.qz-question-footer .qz-primary{width:100%}.qz-review-title span{width:100%;margin-left:26px}.qz-result-actions{flex-direction:column}.qz-result-actions button{width:100%}}
+

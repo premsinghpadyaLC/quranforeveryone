@@ -3,8 +3,9 @@ import {
   BookOpen, Headphones, Search, Bookmark, BookmarkCheck, Languages, MoonStar,
   Menu, X, ChevronDown, ChevronLeft, ChevronRight, Play, Pause, Volume2,
   Heart, Sun, BookMarked, Sparkles, Home, Info, ExternalLink, LoaderCircle,
-  ListMusic, Copy, Check, Settings2, CircleHelp
+  ListMusic, Copy, Check, Settings2
 } from "lucide-react";
+import SurahQuiz from "./SurahQuiz.jsx";
 import {
   getSurahs, getSurah, getEditionList, getEditionsByType, getRandomAyah,
   searchQuran, chooseEdition, getTeluguSurah, getTeluguAyah
@@ -435,6 +436,16 @@ function App() {
                   })}
                 </div>
                 <div className="chapter-pagination"><button disabled={selectedSurah===1} onClick={() => selectSurah(selectedSurah-1)}><ChevronLeft size={16}/> Previous Surah</button><span>{selectedSurah} / 114</span><button disabled={selectedSurah===114} onClick={() => selectSurah(selectedSurah+1)}>Next Surah <ChevronRight size={16}/></button></div>
+                <SurahQuiz
+                  surah={selectedChapter}
+                  verses={verses}
+                  translations={translationData?.ayahs || []}
+                  onNextSurah={
+                    selectedSurah < 114
+                      ? () => selectSurah(selectedSurah + 1)
+                      : null
+                  }
+                />
               </>}
             </>}
 
@@ -452,7 +463,7 @@ function App() {
               {bookmarks.length ? <div className="bookmark-list">{bookmarks.map(b=><article className="bookmark-card" key={b.key}><span className="ayah-badge">{b.key}</span><p className="arabic-text" lang="ar" dir="rtl">{b.text}</p><div className="bookmark-actions"><button onClick={()=>goToBookmark(b)}>Open Surah</button><button onClick={()=>setBookmarks(old=>old.filter(x=>x.key!==b.key))}>Remove</button></div></article>)}</div> : <div className="empty-state"><Bookmark size={30}/><h3>No saved verses yet</h3><p>Tap the bookmark icon beside any verse to keep it here.</p><button onClick={()=>setActiveTab("read")}>Start reading</button></div>}
             </div>}
 
-{activeTab === "daily" && (
+            {activeTab === "daily" && (
   <div className="tab-page">
     <div className="section-heading">
       <div>
