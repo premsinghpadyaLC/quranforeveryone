@@ -3,7 +3,7 @@
 The Quran for Everyone application now includes an interactive quiz feature designed to help learners review what they have read after completing each Surah.
 
 ### Features Implemented
-
+- **Start-of-Surah:** There will be a auto Play Button to be used to listen the whole surah and can pause whereever required.
 - **End-of-Surah Quiz:** A quiz invitation appears after the learner reaches the end of a Surah.
 - **Automatic Question Generation:** Up to five questions are generated using the Arabic verses and their corresponding translations from the currently selected translation.
 - **Multiple-Choice Questions:** Learners identify the correct meaning of an Arabic verse by selecting from the available translation options.
@@ -12,7 +12,6 @@ The Quran for Everyone application now includes an interactive quiz feature desi
 - **Automatic Scoring:** Calculates the learner's score and percentage after completing the quiz.
 - **Score Sharing:** Generates a branded PNG score image that learners can share with friends or download.
 - **Achievement Certificates:** Learners who achieve a score of 75% or higher can enter their name and generate a personalised certificate.
-- **Creator Attribution:** Certificates include a subtle creator credit: "Created by Premsingh Padya".
 - **Retake Quiz:** Learners can attempt the quiz again.
 - **Next Surah Navigation:** After completing the quiz, learners can continue directly to the next Surah.
 
@@ -26,7 +25,6 @@ Certificates include:
 - Achievement percentage
 - Correct answers out of total questions
 - Quran for Everyone branding
-- Creator attribution
 
 ### Technical Implementation
 
