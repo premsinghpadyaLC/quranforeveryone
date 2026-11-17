@@ -64,6 +64,7 @@ function App() {
   const [audioAyah, setAudioAyah] = useState(null);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState("");
+  const [continuousPlayback, setContinuousPlayback] = useState(false);
   const [fontScale, setFontScale] = useState(1);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [copied, setCopied] = useState("");
@@ -199,6 +200,21 @@ function App() {
     : surahData.find(x => x.edition?.identifier === translationEdition?.identifier);
   const transliterationData = surahData.find(x => x.edition?.type === "transliteration");
   const verses = arabicData?.ayahs || [];
+
+  // Keep the currently playing Ayah visible as recitation advances.
+  useEffect(() => {
+    if (!audioAyah || activeTab !== "read" || readerLoading) return;
+
+    const currentVerse = verses.find(ayah => ayah.number === audioAyah);
+    if (!currentVerse) return;
+
+    const verseElement = document.getElementById(
+      `verse-${selectedSurah}-${currentVerse.numberInSurah}`
+    );
+    if (verseElement) {
+      verseElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [audioAyah, selectedSurah, activeTab, readerLoading, verses]);
   const selectedChapter = surahs.find(s => s.number === selectedSurah);
 
   useEffect(() => {
@@ -263,6 +279,10 @@ function App() {
     const globalNumber = ayah.number;
     const player = document.getElementById("qfe-audio");
     if (!player) return;
+
+    // Selecting a different individual Ayah exits continuous Surah playback.
+    if (audioAyah !== globalNumber) setContinuousPlayback(false);
+
     if (audioAyah === globalNumber) {
       if (audioPlaying) {
         player.pause();
@@ -279,9 +299,11 @@ function App() {
       }
       return;
     }
+
     setAudioAyah(globalNumber);
     setAudioError("");
     player.src = `https://cdn.islamic.network/quran/audio/128/${AUDIO_EDITION}/${globalNumber}.mp3`;
+    player.load();
     try {
       await player.play();
       setAudioPlaying(true);
@@ -289,6 +311,77 @@ function App() {
       setAudioPlaying(false);
       setAudioError("Audio couldn't start. Please try again.");
     }
+  }
+
+  async function playEntireSurah() {
+    const player = document.getElementById("qfe-audio");
+    const firstAyah = verses[0];
+    if (!player || !firstAyah) return;
+
+    // If this Surah is already in continuous mode, the button acts as pause/resume.
+    if (continuousPlayback) {
+      if (audioPlaying) {
+        player.pause();
+        setAudioPlaying(false);
+      } else {
+        try {
+          if (player.ended) player.currentTime = 0;
+          await player.play();
+          setAudioPlaying(true);
+        } catch {
+          setAudioPlaying(false);
+          setAudioError("Audio couldn't resume. Please try again.");
+        }
+      }
+      return;
+    }
+
+    setContinuousPlayback(true);
+    setAudioAyah(firstAyah.number);
+    setAudioError("");
+    player.src = `https://cdn.islamic.network/quran/audio/128/${AUDIO_EDITION}/${firstAyah.number}.mp3`;
+    player.load();
+    try {
+      await player.play();
+      setAudioPlaying(true);
+    } catch {
+      setContinuousPlayback(false);
+      setAudioPlaying(false);
+      setAudioError("Surah recitation couldn't start. Please try again.");
+    }
+  }
+
+  function handleAudioEnded() {
+    if (!continuousPlayback) {
+      setAudioPlaying(false);
+      return;
+    }
+
+    const currentIndex = verses.findIndex(ayah => ayah.number === audioAyah);
+    const nextAyah = currentIndex >= 0 ? verses[currentIndex + 1] : null;
+
+    if (!nextAyah) {
+      // The last Ayah has finished: stop continuous playback at the end of this Surah.
+      setContinuousPlayback(false);
+      setAudioPlaying(false);
+      return;
+    }
+
+    const player = document.getElementById("qfe-audio");
+    if (!player) {
+      setContinuousPlayback(false);
+      setAudioPlaying(false);
+      return;
+    }
+
+    setAudioAyah(nextAyah.number);
+    player.src = `https://cdn.islamic.network/quran/audio/128/${AUDIO_EDITION}/${nextAyah.number}.mp3`;
+    player.load();
+    player.play().catch(() => {
+      setContinuousPlayback(false);
+      setAudioPlaying(false);
+      setAudioError("The next Ayah couldn't load. Please try playing it again.");
+    });
   }
 
   async function playDaily() {
@@ -311,6 +404,11 @@ function App() {
   }
 
   function selectSurah(number) {
+    const player = document.getElementById("qfe-audio");
+    if (player) player.pause();
+    setContinuousPlayback(false);
+    setAudioPlaying(false);
+    setAudioAyah(null);
     setSelectedSurah(number); setActiveTab("read"); setMobileMenu(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -393,7 +491,7 @@ function App() {
             {activeTab === "read" && <>
               <div className="section-heading">
                 <div><span className="section-kicker">THE HOLY QURAN</span><h2>Continue your journey</h2><p>Choose a Surah and read at your own pace.</p></div>
-                <div className="chapter-select-wrap"><select value={selectedSurah} onChange={e => setSelectedSurah(Number(e.target.value))}>{surahs.map(s => <option key={s.number} value={s.number}>{s.number}. {s.englishName}</option>)}</select><ChevronDown size={15}/></div>
+                <div className="chapter-select-wrap"><select value={selectedSurah} onChange={e => selectSurah(Number(e.target.value))}>{surahs.map(s => <option key={s.number} value={s.number}>{s.number}. {s.englishName}</option>)}</select><ChevronDown size={15}/></div>
               </div>
               {readerError && <ErrorMessage message={readerError} retry={() => loadSurah(selectedSurah)}/>}
               {readerLoading ? <Loading label="Loading verses…"/> : selectedChapter && verses.length > 0 && <>
@@ -403,14 +501,32 @@ function App() {
                   <h3>{selectedChapter.englishName}</h3><p>{selectedChapter.englishNameTranslation}</p>
                   {selectedSurah !== 1 && selectedSurah !== 9 && <div className="bismillah" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>}
                 </div>
-                <div className="reader-toolbar"><span><BookOpen size={15}/> {selectedChapter.numberOfAyahs} verses</span><span className="translation-label"><Languages size={15}/>{selectedLanguage === "te" ? "Telugu · QuranEnc · Version 1.0.7" : (translationEdition?.englishName || LANGUAGES.find(l=>l.code===selectedLanguage)?.label || "Translation")}</span></div>
+                <div className="reader-toolbar">
+                  <span><BookOpen size={15}/> {selectedChapter.numberOfAyahs} verses</span>
+                  <span className="translation-label"><Languages size={15}/>{selectedLanguage === "te" ? "Telugu · QuranEnc · Version 1.0.7" : (translationEdition?.englishName || LANGUAGES.find(l=>l.code===selectedLanguage)?.label || "Translation")}</span>
+                  <button
+                    type="button"
+                    onClick={playEntireSurah}
+                    aria-label={continuousPlayback && audioPlaying ? "Pause Surah recitation" : continuousPlayback ? "Resume Surah recitation" : "Play entire Surah"}
+                    title={continuousPlayback ? (audioPlaying ? "Pause continuous recitation" : "Resume continuous recitation") : "Play the entire Surah"}
+                    style={{
+                      display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "7px",
+                      border: "1px solid var(--border, #d8e2dc)", borderRadius: "999px",
+                      padding: "8px 13px", background: "var(--surface, #fff)", color: "var(--text, #18352b)",
+                      font: "inherit", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap"
+                    }}
+                  >
+                    {continuousPlayback && audioPlaying ? <Pause size={15}/> : <Play size={15}/>}
+                    {continuousPlayback ? (audioPlaying ? "Pause Surah" : "Resume Surah") : "Play entire Surah"}
+                  </button>
+                </div>
                 <div className="verse-list">
                   {verses.map((ayah, index) => {
                     const translated = verseAt(translationData, index);
                     const transliterated = verseAt(transliterationData, index);
                     const marked = isBookmarked(selectedSurah, ayah.numberInSurah);
                     const playing = audioAyah === ayah.number && audioPlaying;
-                    return <article id={`verse-${selectedSurah}-${ayah.numberInSurah}`} data-verse-progress={ayah.numberInSurah} className={`verse-card ${audioAyah === ayah.number ? "audio-active" : ""}`} key={ayah.number}>
+                    return <article id={`verse-${selectedSurah}-${ayah.numberInSurah}`} data-verse-progress={ayah.numberInSurah} className={`verse-card ${audioAyah === ayah.number ? "audio-active" : ""}`} style={{ scrollMarginTop: "96px" }} key={ayah.number}>
                       <div className="verse-topline"><span className="ayah-badge">{selectedSurah}:{ayah.numberInSurah}</span><div className="verse-actions">
                         <button title={playing ? "Pause recitation" : "Play or resume recitation"} onClick={() => playVerse(ayah)} className={playing ? "action-active" : ""}>{playing ? <Pause size={16}/> : <Play size={16}/>}</button>
                         <button title={marked ? "Remove bookmark" : "Bookmark"} onClick={() => toggleBookmark({...ayah, surah:selectedChapter})}>{marked ? <BookmarkCheck size={17}/> : <Bookmark size={17}/>}</button>
@@ -507,7 +623,7 @@ function App() {
         <div className="footer-links"><a href="https://alquran.cloud/api" target="_blank" rel="noreferrer">Quran data <ExternalLink size={12}/></a><a href="https://quranenc.com/en/home/api/" target="_blank" rel="noreferrer">QuranEnc translations <ExternalLink size={12}/></a><a href="https://tanzil.net/docs/Text_License" target="_blank" rel="noreferrer">Tanzil text licence <ExternalLink size={12}/></a></div>
         <small>Quran text, translations, recitations and commentary are provided by their respective publishers. Telugu translation: Abdurrahim ibn Muhammad, QuranEnc.com, version 1.0.7.</small>
       </footer>
-      <audio id="qfe-audio" onEnded={()=>setAudioPlaying(false)} onPause={()=>setAudioPlaying(false)} onPlay={()=>setAudioPlaying(true)} />
+      <audio id="qfe-audio" preload="none" onEnded={handleAudioEnded} onPause={()=>setAudioPlaying(false)} onPlay={()=>setAudioPlaying(true)} />
       {audioError && <div className="toast">{audioError}<button onClick={()=>setAudioError("")}><X size={14}/></button></div>}
     </div>
   );
