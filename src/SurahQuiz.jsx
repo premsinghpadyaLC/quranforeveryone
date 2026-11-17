@@ -185,20 +185,9 @@ function createImage({
       certificate ? 710 : 580
     );
 
-    // Footer branding. Keep the creator credit subtle on certificates.
     ctx.fillStyle = "#e7cb89";
     ctx.font = "22px Georgia, serif";
-    ctx.fillText(
-      "Read · Reflect · Understand",
-      width / 2,
-      certificate ? height - 105 : height - 75
-    );
-
-    if (certificate) {
-      ctx.fillStyle = "rgba(246, 241, 229, 0.78)";
-      ctx.font = "16px Georgia, serif";
-      ctx.fillText("Created by Premsingh Padya", width / 2, height - 62);
-    }
+    ctx.fillText("Read · Reflect · Understand", width / 2, height - 75);
 
     canvas.toBlob(blob => {
       if (blob) resolve(blob);
