@@ -363,18 +363,17 @@ export default function SurahQuiz({
     <>
       {/* Surah ending quiz invitation */}
       <section className="qfe-surah-quiz">
-        <div className="qfe-quiz-decoration">✦</div>
+        <div className="qfe-quiz-decoration">☪</div>
 
         <div className="qfe-quiz-copy">
-          <span className="qfe-quiz-kicker">A LITTLE REVIEW</span>
+          <span className="qfe-quiz-kicker">Let us Recap</span>
 
           <h3>
             You've completed {surah.englishName}!
           </h3>
 
           <p>
-            How much do you remember? Take a short quiz and celebrate
-            your learning.
+            How much did you take away today? Try this short quiz to reflect on what you've learned and share it with family and friends.
           </p>
         </div>
 
